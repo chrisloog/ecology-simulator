@@ -99,4 +99,9 @@ public class Environment {
                 .collect(Collectors.toList());
     }
 
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+    public Grass getGrassAt(int x, int y) { return grassGrid[x][y]; }
+    public List<Agent> getAgents() { return agents; }
+
 }

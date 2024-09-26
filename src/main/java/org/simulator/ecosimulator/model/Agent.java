@@ -46,5 +46,7 @@ public abstract class Agent {
         return nearest;
     }
 
+    public Position getPosition() { return position; }
+
 }
 

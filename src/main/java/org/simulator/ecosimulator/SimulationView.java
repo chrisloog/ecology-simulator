@@ -1,37 +1,79 @@
 package org.simulator.ecosimulator;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.simulator.ecosimulator.model.*;
 
 
 public class SimulationView extends Application {
+    private Environment environment;
+    private static final int CELL_SIZE = 10;
 
-    public static void main(String[] args) {
-        launch(args);
+    public SimulationView() {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+    public void start(Stage primaryStage) {
+        // Initialize the environment
+        environment = new Environment(15, 15); // Set desired width and height
 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+        // Add initial agents to the environment
+        environment.addAgent(new Rabbit(new Position(10, 10), environment));
+        environment.addAgent(new Fox(new Position(5, 5), environment));
+        // Add more agents as needed
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        // Set up the canvas and graphics context
+        Canvas canvas = new Canvas(environment.getWidth() * CELL_SIZE, environment.getHeight() * CELL_SIZE);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        // Animation loop using Timeline
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+            environment.update();
+            render(gc);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+        // Set up the scene and stage
+        primaryStage.setScene(new Scene(new Group(canvas)));
+        primaryStage.setTitle("Ecosystem Simulation");
         primaryStage.show();
+    }
+
+    private void render(GraphicsContext gc) {
+        // Clear canvas
+        gc.clearRect(0, 0, environment.getWidth() * CELL_SIZE, environment.getHeight() * CELL_SIZE);
+
+        // Draw grass patches
+        for (int x = 0; x < environment.getWidth(); x++) {
+            for (int y = 0; y < environment.getHeight(); y++) {
+                Grass grass = environment.getGrassAt(x, y);
+                gc.setFill(grass.isEaten() ? Color.BROWN : Color.GREEN);
+                gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+        }
+
+        // Draw agents
+        for (Agent agent : environment.getAgents()) {
+            if (agent instanceof Rabbit) {
+                gc.setFill(Color.WHITE);
+            } else if (agent instanceof Fox) {
+                gc.setFill(Color.ORANGE);
+            }
+            Position pos = agent.getPosition();
+            // Draw agent as a smaller oval to see grass underneath
+            double padding = CELL_SIZE * 0.2;
+            gc.fillOval(pos.x * CELL_SIZE + padding / 2, pos.y * CELL_SIZE + padding / 2, CELL_SIZE - padding, CELL_SIZE - padding);
+        }
     }
 
 }
