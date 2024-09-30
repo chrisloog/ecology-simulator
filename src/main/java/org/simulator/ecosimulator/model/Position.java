@@ -7,5 +7,10 @@ public class Position {
         this.x = x;
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Position X is %s and Position Y is %s", x, y);
+    }
 }
 

@@ -12,7 +12,7 @@ public class Rabbit extends Agent {
     public void update() {
         move();
         eat();
-        reproduce();
+        // reproduce();
     }
 
     private void move() {

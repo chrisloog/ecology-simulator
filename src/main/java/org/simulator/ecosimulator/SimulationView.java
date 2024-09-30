@@ -28,7 +28,7 @@ public class SimulationView extends Application {
 
         // Add initial agents to the environment
         environment.addAgent(new Rabbit(new Position(10, 10), environment));
-        environment.addAgent(new Fox(new Position(5, 5), environment));
+        // environment.addAgent(new Fox(new Position(5, 5), environment));
         // Add more agents as needed
 
         // Set up the canvas and graphics context
@@ -36,7 +36,7 @@ public class SimulationView extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Animation loop using Timeline
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), e -> {
             environment.update();
             render(gc);
         }));
@@ -54,11 +54,23 @@ public class SimulationView extends Application {
         gc.clearRect(0, 0, environment.getWidth() * CELL_SIZE, environment.getHeight() * CELL_SIZE);
 
         // Draw grass patches
+        gc.setFill(Color.GREEN);
         for (int x = 0; x < environment.getWidth(); x++) {
             for (int y = 0; y < environment.getHeight(); y++) {
                 Grass grass = environment.getGrassAt(x, y);
-                gc.setFill(grass.isEaten() ? Color.BROWN : Color.GREEN);
-                gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                if (!grass.isEaten()) {
+                    gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                }
+            }
+        }
+
+        gc.setFill(Color.BROWN);
+        for (int x = 0; x < environment.getWidth(); x++) {
+            for (int y = 0; y < environment.getHeight(); y++) {
+                Grass grass = environment.getGrassAt(x, y);
+                if (grass.isEaten()) {
+                    gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                }
             }
         }
 
@@ -70,10 +82,10 @@ public class SimulationView extends Application {
                 gc.setFill(Color.ORANGE);
             }
             Position pos = agent.getPosition();
-            // Draw agent as a smaller oval to see grass underneath
             double padding = CELL_SIZE * 0.2;
             gc.fillOval(pos.x * CELL_SIZE + padding / 2, pos.y * CELL_SIZE + padding / 2, CELL_SIZE - padding, CELL_SIZE - padding);
         }
     }
+
 
 }

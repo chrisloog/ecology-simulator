@@ -16,7 +16,6 @@ public class Environment {
     public Boolean isExtinct = false;
 
     private int elapsedHours = 0;
-    private int timeMultiplier = 5;
 
     public Environment(int width, int height) {
         this.width = width;
@@ -26,10 +25,6 @@ public class Environment {
         grassGrid = new Grass[width][height];
 
         initializeGrid();
-    }
-
-    public void setTimeMultiplier(int multiplier) {
-        this.timeMultiplier = multiplier;
     }
 
     public void addAgent(Agent agent) {
@@ -51,24 +46,20 @@ public class Environment {
     public void update() {
         for (Agent agent : agents) {
             agent.update();
+            System.out.println(agent.position.toString());
         }
 
         agents.addAll(newAgents);
         newAgents.clear();
 
-        regrowGrass();
+        // TODO: regrow grass after specific time
+        // regrowGrass();
 
         if (agents.isEmpty()) {
             this.isExtinct = true;
         }
 
         elapsedHours++;
-
-        try {
-            Thread.sleep(100L * timeMultiplier);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private void initializeGrid() {
