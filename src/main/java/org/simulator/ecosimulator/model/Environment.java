@@ -46,7 +46,6 @@ public class Environment {
     public void update() {
         for (Agent agent : agents) {
             agent.update();
-            System.out.println(agent.position.toString());
         }
 
         agents.addAll(newAgents);

@@ -28,7 +28,7 @@ public class SimulationView extends Application {
 
         // Add initial agents to the environment
         environment.addAgent(new Rabbit(new Position(10, 10), environment));
-        // environment.addAgent(new Fox(new Position(5, 5), environment));
+        environment.addAgent(new Fox(new Position(5, 5), environment));
         // Add more agents as needed
 
         // Set up the canvas and graphics context

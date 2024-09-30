@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Fox extends Agent {
 
-    private static final int SEARCH_RANGE = 3;
+    private static final int SEARCH_RANGE = 100;
 
     public Fox(Position position, Environment env) {
         super(position, env);
@@ -14,7 +14,7 @@ public class Fox extends Agent {
     public void update() {
         move();
         hunt();
-        reproduce();
+        // reproduce();
     }
 
     private void move() {
