@@ -3,9 +3,13 @@ package org.simulator.ecosimulator.model;
 import java.util.function.Predicate;
 
 public abstract class Agent {
+
     public Position position;
     protected Environment env;
-    protected int foodPoints;
+    protected float foodPoints;
+    protected int maxFoodPoints;
+    protected int stamina;
+
 
     public Agent(Position position, Environment env) {
         this.position = position;
@@ -47,6 +51,10 @@ public abstract class Agent {
     }
 
     public Position getPosition() { return position; }
+
+    protected boolean needsFood() {
+        return foodPoints < maxFoodPoints;
+    }
 
 }
 

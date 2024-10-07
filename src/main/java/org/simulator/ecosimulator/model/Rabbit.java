@@ -6,18 +6,36 @@ public class Rabbit extends Agent {
 
     public Rabbit(Position position, Environment env) {
         super(position, env);
+        stamina = 10;
+        maxFoodPoints = 8;
     }
 
     @Override
     public void update() {
-        move();
-        eat();
-        // reproduce();
+        if (stamina <= 0) {
+            rest();
+        } else {
+            move();
+            if (needsFood()) {
+                eat();
+            }
+            reproduce();
+        }
     }
 
     private void move() {
-        Position target = findNearestTarget(SEARCH_RANGE, this::isFoodAt);
+        Position target;
+
+        if (needsFood()) {
+            target = findNearestTarget(SEARCH_RANGE, this::isFoodAt);
+        } else {
+            target = env.getRandomPosition();
+        }
+
         moveTowards(target);
+
+        stamina--;
+        foodPoints -= 0.25F;
     }
 
     private void eat() {
@@ -26,10 +44,9 @@ public class Rabbit extends Agent {
     }
 
     private void reproduce() {
-        if (foodPoints >= 10) {
+        if (foodPoints >= 5) {
             env.addAgent(new Rabbit(
-                    new Position(this.position.x + 1, this.position.y)
-                    , env)
+                    new Position(this.position.x + 1, this.position.y), env)
             );
 
             foodPoints = 0;
@@ -38,6 +55,12 @@ public class Rabbit extends Agent {
 
     private boolean isFoodAt(Position pos) {
         return !env.grassGrid[pos.x][pos.y].isEaten();
+    }
+
+    private void rest() {
+        stamina = 10;
+        foodPoints--;
+        System.out.println("Resting...");
     }
 
 }

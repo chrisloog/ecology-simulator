@@ -3,6 +3,7 @@ package org.simulator.ecosimulator.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 public class Environment {
 
@@ -46,13 +47,18 @@ public class Environment {
     public void update() {
         for (Agent agent : agents) {
             agent.update();
+            System.out.println("===================");
+            System.out.println(agent.foodPoints);
+            System.out.println("===================");
         }
 
         agents.addAll(newAgents);
         newAgents.clear();
 
-        // TODO: regrow grass after specific time
-        // regrowGrass();
+        int elapsedDays = getElapsedDays();
+        if (elapsedDays > 0 && elapsedDays % 3 == 0) {
+            regrowGrass();
+        }
 
         if (agents.isEmpty()) {
             this.isExtinct = true;
@@ -93,5 +99,14 @@ public class Environment {
     public int getHeight() { return height; }
     public Grass getGrassAt(int x, int y) { return grassGrid[x][y]; }
     public List<Agent> getAgents() { return agents; }
+
+    public Position getRandomPosition() {
+        Random random = new Random();
+
+        int x = random.nextInt(width);
+        int y = random.nextInt(height);
+
+        return new Position(x, y);
+    }
 
 }

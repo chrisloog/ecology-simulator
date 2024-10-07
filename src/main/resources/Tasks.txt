@@ -1,0 +1,23 @@
+Agent:
+    - Rest after reaching food limit
+    - Remove food points used for moving
+    - Die after not eating food for a specified time
+
+
+Fox:
+    - If no target is found, move in a random direction (patrol area)
+    - Newborn foxes find a new area separate from their parent
+
+
+Rabbit:
+    - CURRENT - Rabbit gains 1.0 food points when eating, and loses 0.25 with every step, 1.0 while resting, and all when reproducing.
+
+    - Escape from fox, if there are sufficient amount of food points
+    - Remove food points used for escaping
+    - Eating a bit more random, not straightforward
+    - If possible, move to the nearest hideout when escaping
+
+
+Environment:
+    - Regrow grass after specified time
+    - Provide hideouts for prey animals

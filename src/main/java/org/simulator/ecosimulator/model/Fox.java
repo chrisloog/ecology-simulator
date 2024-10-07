@@ -4,10 +4,11 @@ import java.util.List;
 
 public class Fox extends Agent {
 
-    private static final int SEARCH_RANGE = 100;
+    private static final int SEARCH_RANGE = 10;
 
     public Fox(Position position, Environment env) {
         super(position, env);
+        stamina = 5;
     }
 
     @Override

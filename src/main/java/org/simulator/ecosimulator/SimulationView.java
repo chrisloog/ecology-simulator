@@ -23,15 +23,15 @@ public class SimulationView extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        environment = new Environment(15, 15);
+        environment = new Environment(30, 30);
 
-        environment.addAgent(new Rabbit(new Position(10, 10), environment));
-        environment.addAgent(new Fox(new Position(5, 5), environment));
+        environment.addAgent(new Rabbit(new Position(30, 28), environment));
+        // environment.addAgent(new Fox(new Position(1, 1), environment));
 
         Canvas canvas = new Canvas(environment.getWidth() * CELL_SIZE, environment.getHeight() * CELL_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), e -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
             environment.update();
             render(gc);
         }));
